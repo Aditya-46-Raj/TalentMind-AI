@@ -1,9 +1,7 @@
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
-  return (
-    <div>
-      TalentMind AI
-    </div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
