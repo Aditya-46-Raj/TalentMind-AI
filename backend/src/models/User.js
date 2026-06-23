@@ -59,7 +59,6 @@ userSchema.methods.comparePassword =
         );
     };
 
-
 const User = mongoose.model("User", userSchema);
 
 export default User;

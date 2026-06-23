@@ -1,38 +1,39 @@
-import User from "../models/User.js";
-import generateToken from "../utils/generateToken.js";
-
-export const registerUser = async (
+export const loginUser = async (
     req,
     res
 ) => {
     try {
-        const {
-            name,
+        const { email, password } = req.body;
+
+        const user = await User.findOne({
             email,
-            password,
-        } = req.body;
+        });
 
-        const existingUser =
-            await User.findOne({ email });
-
-        if (existingUser) {
-            return res.status(400).json({
+        if (!user) {
+            return res.status(401).json({
                 success: false,
                 message:
-                    "User already exists",
+                    "Invalid credentials",
             });
         }
 
-        const user = await User.create({
-            name,
-            email,
-            password,
-        });
+        const isMatch =
+            await user.comparePassword(
+                password
+            );
+
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message:
+                    "Invalid credentials",
+            });
+        }
 
         const token =
             generateToken(user._id);
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             token,
             user: {
@@ -52,16 +53,12 @@ export const registerUser = async (
     }
 };
 
-export const loginUser = async (req, res) => {
+export const getMe = async (
+    req,
+    res
+) => {
     res.status(200).json({
         success: true,
-        message: "Login route working",
-    });
-};
-
-export const getMe = async (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "Current user route working",
+        user: req.user,
     });
 };
