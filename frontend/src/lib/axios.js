@@ -1,28 +1,21 @@
-import axios from 'axios';
-import { useAuthStore } from '../features/auth/authStore';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 api.interceptors.request.use(
   (config) => {
-    // Get token directly from localStorage if Zustand persist is used
-    const authStorage = localStorage.getItem('auth-storage');
-    if (authStorage) {
-      try {
-        const { state } = JSON.parse(authStorage);
-        if (state.token) {
-          config.headers.Authorization = `Bearer ${state.token}`;
-        }
-      } catch (error) {
-        console.error("Error parsing auth-storage", error);
-      }
+    const token =
+      localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization =
+        `Bearer ${token}`;
     }
+
     return config;
-  },
-  (error) => Promise.reject(error)
+  }
 );
 
 export default api;
