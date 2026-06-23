@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import AppRoutes from "./routes/AppRoutes";
+import { useAuthStore } from "./features/auth/authStore";
 
 function App() {
+  const { checkAuth, token } = useAuthStore();
+
+  useEffect(() => {
+    if (token) {
+      checkAuth();
+    }
+  }, [checkAuth, token]);
+
   return <AppRoutes />;
 }
 
