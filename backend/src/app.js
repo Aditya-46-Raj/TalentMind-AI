@@ -5,6 +5,10 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 
+import profileRoutes from "./routes/profile.routes.js";
+
+import resumeRoutes from "./routes/resume.routes.js";
+
 const app = express();
 
 app.use(express.json());
@@ -21,6 +25,16 @@ app.use(
 app.use(helmet());
 
 app.use(morgan("dev"));
+
+app.use(
+  "/api/profile",
+  profileRoutes
+);
+
+app.use(
+  "/api/resume",
+  resumeRoutes
+);
 
 app.use("/api/auth", authRoutes);
 
