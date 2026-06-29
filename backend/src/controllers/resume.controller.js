@@ -121,3 +121,36 @@ export const uploadResume =
             });
         }
     };
+
+export const getLatestResume =
+    async (req, res) => {
+        try {
+            const resume =
+                await Resume.findOne({
+                    user: req.user._id,
+                }).sort({ createdAt: -1 });
+
+            if (!resume) {
+                return res
+                    .status(404)
+                    .json({
+                        success: false,
+                        message:
+                            "No resume found",
+                    });
+            }
+
+            res.status(200).json({
+                success: true,
+                resume,
+            });
+        } catch (error) {
+            console.error(error);
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "Server Error",
+            });
+        }
+    };

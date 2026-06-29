@@ -1,6 +1,7 @@
 import { create } from "zustand";
+import { getCurrentUser } from "../services/authService";
 
-const useAuthStore = create((set) => ({
+const useAuthStore = create((set, get) => ({
   user: null,
   token: localStorage.getItem("token") || null,
   loading: false,
@@ -20,6 +21,15 @@ const useAuthStore = create((set) => ({
       token: null,
     });
   },
+
+  checkAuth: async () => {
+    try {
+      const data = await getCurrentUser();
+      set({ user: data.user });
+    } catch (error) {
+      get().logout();
+    }
+  }
 }));
 
 export default useAuthStore;

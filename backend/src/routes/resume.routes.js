@@ -6,6 +6,7 @@ import upload from "../middleware/upload.middleware.js";
 
 import {
     uploadResume,
+    getLatestResume,
 } from "../controllers/resume.controller.js";
 
 const router =
@@ -16,6 +17,12 @@ router.post(
     protect,
     upload.single("resume"),
     uploadResume
+);
+
+router.get(
+    "/latest",
+    protect,
+    getLatestResume
 );
 
 export default router;
