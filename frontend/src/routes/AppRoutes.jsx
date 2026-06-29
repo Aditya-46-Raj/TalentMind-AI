@@ -3,7 +3,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
+import useAuthStore from "../features/auth/store/authStore";
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
@@ -14,20 +14,25 @@ import PublicRoute from "./PublicRoute";
 import JDInputPage from "../features/job/pages/JDInputPage";
 import AnalysisResultPage from "../features/job/pages/AnalysisResultPage";
 import ChatPage from "../features/chat/pages/ChatPage";
+import MainLayout from "../components/layout/MainLayout";
+import AuthLayout from "../components/layout/AuthLayout";
 
 function AppRoutes() {
   return (
     <Routes>
       <Route
         path="/"
-        element={<Navigate to="/dashboard" />}
+        element={<Navigate to="/dashboard" replace />}
       />
 
+      {/* Public Routes with AuthLayout */}
       <Route
         path="/login"
         element={
           <PublicRoute>
-            <LoginPage />
+            <AuthLayout>
+              <LoginPage />
+            </AuthLayout>
           </PublicRoute>
         }
       />
@@ -36,16 +41,21 @@ function AppRoutes() {
         path="/register"
         element={
           <PublicRoute>
-            <RegisterPage />
+            <AuthLayout>
+              <RegisterPage />
+            </AuthLayout>
           </PublicRoute>
         }
       />
 
+      {/* Protected Routes with MainLayout */}
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <DashboardPage />
+            <MainLayout>
+              <DashboardPage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
@@ -54,7 +64,9 @@ function AppRoutes() {
         path="/profile"
         element={
           <ProtectedRoute>
-            <ProfilePage />
+            <MainLayout>
+              <ProfilePage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
@@ -63,7 +75,9 @@ function AppRoutes() {
         path="/job/analyze"
         element={
           <ProtectedRoute>
-            <JDInputPage />
+            <MainLayout>
+              <JDInputPage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
@@ -72,7 +86,9 @@ function AppRoutes() {
         path="/job/results/:id"
         element={
           <ProtectedRoute>
-            <AnalysisResultPage />
+            <MainLayout>
+              <AnalysisResultPage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
@@ -81,7 +97,9 @@ function AppRoutes() {
         path="/chat"
         element={
           <ProtectedRoute>
-            <ChatPage />
+            <MainLayout>
+              <ChatPage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
@@ -90,7 +108,9 @@ function AppRoutes() {
         path="/chat/:id"
         element={
           <ProtectedRoute>
-            <ChatPage />
+            <MainLayout>
+              <ChatPage />
+            </MainLayout>
           </ProtectedRoute>
         }
       />
