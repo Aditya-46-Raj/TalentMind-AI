@@ -14,6 +14,9 @@ import PublicRoute from "./PublicRoute";
 import JDInputPage from "../features/job/pages/JDInputPage";
 import AnalysisResultPage from "../features/job/pages/AnalysisResultPage";
 import ChatPage from "../features/chat/pages/ChatPage";
+import InterviewSetupPage from "../features/interview/pages/InterviewSetupPage";
+import InterviewSessionPage from "../features/interview/pages/InterviewSessionPage";
+import InterviewReportPage from "../features/interview/pages/InterviewReportPage";
 import MainLayout from "../components/layout/MainLayout";
 import AuthLayout from "../components/layout/AuthLayout";
 
@@ -110,6 +113,39 @@ function AppRoutes() {
           <ProtectedRoute>
             <MainLayout>
               <ChatPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/interview/setup"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <InterviewSetupPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/interview/session/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <InterviewSessionPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/interview/report/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <InterviewReportPage />
             </MainLayout>
           </ProtectedRoute>
         }

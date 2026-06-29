@@ -10,6 +10,7 @@ import profileRoutes from "./routes/profile.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";
 import jobRoutes from "./routes/job.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import interviewRoutes from "./routes/interview.routes.js";
 
 const app = express();
 
@@ -52,6 +53,11 @@ app.use(
 app.use(
   "/api/chat",
   chatRoutes
+);
+
+app.use(
+  "/api/interview",
+  interviewRoutes
 );
 
 app.use("/api/auth", authRoutes);

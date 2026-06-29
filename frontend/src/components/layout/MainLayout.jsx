@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import useAuthStore from "@/features/auth/store/authStore";
-import { LayoutDashboard, Briefcase, MessageSquare, User, LogOut } from "lucide-react";
+import { LayoutDashboard, Briefcase, MessageSquare, User, LogOut, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function MainLayout({ children }) {
@@ -10,6 +10,7 @@ function MainLayout({ children }) {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "Job Match", path: "/job/analyze", icon: Briefcase },
+    { name: "Mock Interview", path: "/interview/setup", icon: Mic },
     { name: "AI Mentor", path: "/chat", icon: MessageSquare },
     { name: "Profile", path: "/profile", icon: User },
   ];
