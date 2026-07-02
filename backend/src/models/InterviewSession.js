@@ -47,6 +47,16 @@ const interviewSessionSchema = new mongoose.Schema(
             resourcesToLearn: [String],
             thirtyDayPlan: String,
         },
+        startedAt: {
+            type: Date,
+            default: Date.now,
+        },
+        completedAt: {
+            type: Date,
+        },
+        duration: {
+            type: Number, // in seconds
+        },
     },
     {
         timestamps: true,

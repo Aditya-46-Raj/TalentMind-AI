@@ -60,6 +60,11 @@ export const submitInterview = async (req, res) => {
         session.feedback = evaluation.feedback;
         session.improvementPlan = evaluation.improvementPlan;
         
+        session.completedAt = new Date();
+        if (session.startedAt) {
+            session.duration = Math.floor((session.completedAt - session.startedAt) / 1000);
+        }
+        
         await session.save();
 
         res.status(200).json({
