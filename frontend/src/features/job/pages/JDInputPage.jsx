@@ -5,6 +5,7 @@ import { analyzeJob } from "../services/jobService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2, Upload, FileText, Briefcase } from "lucide-react";
 
 function JDInputPage() {
     const [resume, setResume] = useState(null);
@@ -32,7 +33,6 @@ function JDInputPage() {
                 setResume(data.resume);
             }
         } catch (err) {
-            // It's normal to get 404 if no resume uploaded yet
             console.error("Error fetching resume", err);
         } finally {
             setIsLoading(false);
@@ -101,26 +101,42 @@ function JDInputPage() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-6 space-y-8">
-            <h1 className="text-3xl font-bold">JD Analyzer & Match Engine</h1>
+        <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-8 animate-in fade-in duration-500">
+            <div className="flex flex-col items-center text-center space-y-4 mb-4">
+                <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                    <Briefcase className="w-8 h-8" />
+                </div>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">JD Analyzer & Match Engine</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Upload your resume and paste a job description to get your ATS match score.
+                    </p>
+                </div>
+            </div>
             
             {error && (
-                <div className="p-4 bg-red-100 text-red-700 rounded-md">
+                <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 rounded-md">
                     {error}
                 </div>
             )}
 
             {/* Resume Section */}
-            <div className="p-6 bg-gray-50 border rounded-lg space-y-4">
-                <h2 className="text-xl font-semibold">Your Resume</h2>
+            <div className="p-6 bg-muted/30 border rounded-2xl shadow-sm space-y-4">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-muted-foreground" />
+                    Your Resume
+                </h2>
                 
                 {isLoading ? (
-                    <p>Loading resume...</p>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Loading resume...
+                    </div>
                 ) : resume ? (
-                    <div className="flex items-center justify-between bg-white p-4 rounded border">
+                    <div className="flex items-center justify-between bg-card p-4 rounded-xl border">
                         <div className="flex flex-col">
-                            <span className="font-medium text-gray-800">{resume.fileName}</span>
-                            <span className="text-sm text-gray-500">
+                            <span className="font-medium text-foreground">{resume.fileName}</span>
+                            <span className="text-sm text-muted-foreground">
                                 Uploaded on {new Date(resume.createdAt).toLocaleDateString()}
                             </span>
                         </div>
@@ -128,17 +144,22 @@ function JDInputPage() {
                             variant="outline" 
                             onClick={handleReplaceClick}
                             disabled={isUploading || isAnalyzing}
+                            className="gap-2"
                         >
-                            {isUploading ? "Uploading..." : "Replace Resume"}
+                            {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                            {isUploading ? "Uploading..." : "Replace"}
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex flex-col items-start space-y-4">
-                        <p className="text-gray-600">No resume found. You must upload one before analyzing a job.</p>
+                    <div className="flex flex-col items-center justify-center space-y-4 py-8 border-2 border-dashed rounded-xl bg-card/50">
+                        <Upload className="w-8 h-8 text-muted-foreground" />
+                        <p className="text-muted-foreground text-sm">No resume found. Upload one to start.</p>
                         <Button 
                             onClick={handleReplaceClick}
                             disabled={isUploading || isAnalyzing}
+                            className="gap-2"
                         >
+                            {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                             {isUploading ? "Uploading..." : "Upload Resume"}
                         </Button>
                     </div>
@@ -154,8 +175,8 @@ function JDInputPage() {
             </div>
 
             {/* Job Details Section */}
-            <form onSubmit={handleAnalyze} className="space-y-6 bg-white p-6 rounded-lg border shadow-sm">
-                <h2 className="text-xl font-semibold">Job Description Details</h2>
+            <form onSubmit={handleAnalyze} className="space-y-6 bg-card p-6 rounded-2xl border shadow-sm">
+                <h2 className="text-lg font-semibold">Job Description Details</h2>
                 
                 <div className="space-y-2">
                     <Label htmlFor="jobTitle">Job Title</Label>
@@ -183,7 +204,7 @@ function JDInputPage() {
                     <Label htmlFor="jobDescription">Job Description</Label>
                     <textarea 
                         id="jobDescription"
-                        className="w-full min-h-[200px] flex rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        className="min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-y"
                         placeholder="Paste the full job description here..."
                         value={jobDescription}
                         onChange={(e) => setJobDescription(e.target.value)}
@@ -193,9 +214,10 @@ function JDInputPage() {
 
                 <Button 
                     type="submit" 
-                    className="w-full"
+                    className="w-full gap-2"
                     disabled={!resume || isAnalyzing || isUploading}
                 >
+                    {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     {isAnalyzing ? "Analyzing Match..." : "Analyze Match"}
                 </Button>
             </form>

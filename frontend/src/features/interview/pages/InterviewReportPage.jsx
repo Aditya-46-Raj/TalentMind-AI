@@ -115,11 +115,11 @@ function InterviewReportPage() {
                             </div>
                         </div>
                     </div>
-                </div >
-            </div >
+                </div>
+            </div>
 
             {/* Feedback Section */}
-            < div className="grid grid-cols-1 md:grid-cols-3 gap-6" >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="border rounded-2xl bg-emerald-500/5 p-6 shadow-sm">
                     <div className="flex items-center gap-2 mb-4 text-emerald-600">
                         <CheckCircle2 className="w-5 h-5" />
@@ -164,10 +164,10 @@ function InterviewReportPage() {
                         ))}
                     </ul>
                 </div>
-            </div >
+            </div>
 
             {/* Improvement Plan */}
-            < div className="border rounded-2xl bg-card p-6 md:p-8 shadow-sm" >
+            <div className="border rounded-2xl bg-card p-6 md:p-8 shadow-sm">
                 <h3 className="text-2xl font-bold mb-6">Your 30-Day Improvement Plan</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -194,9 +194,9 @@ function InterviewReportPage() {
                         {improvementPlan?.thirtyDayPlan || ""}
                     </ReactMarkdown>
                 </div>
-            </div >
+            </div>
 
-        </div >
+        </div>
     );
 }
 
