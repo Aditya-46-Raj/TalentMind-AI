@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useAuthStore from "@/features/auth/store/authStore";
 import { 
     LayoutDashboard, Briefcase, MessageSquare, User, 
-    LogOut, Mic, Settings, Menu, X, ExternalLink, Mail, ChevronRight 
+    LogOut, Mic, Settings, Menu, X, ExternalLink, Mail, ChevronRight,
+    Sun, Moon, Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +12,31 @@ function MainLayout({ children }) {
   const { user, logout } = useAuthStore();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
+
+  const applyTheme = (selectedTheme) => {
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    if (selectedTheme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      root.classList.add(systemTheme);
+    } else {
+      root.classList.add(selectedTheme);
+    }
+    localStorage.setItem("theme", selectedTheme);
+  };
+
+  const toggleTheme = () => {
+    const isDark = document.documentElement.classList.contains("dark");
+    const newTheme = isDark ? "light" : "dark";
+    setTheme(newTheme);
+  };
+
+  const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -137,7 +163,18 @@ function MainLayout({ children }) {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {/* Dark Mode Toggle */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleTheme} 
+              className="text-muted-foreground hover:text-foreground"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </Button>
+
             <Link to="/profile" className="hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-border">
                     {user?.avatar ? (
@@ -175,30 +212,77 @@ function MainLayout({ children }) {
             {children}
           </div>
 
-          {/* Preserved Footer */}
+          {/* Enhanced Professional Footer */}
           <footer className="border-t bg-card mt-auto shrink-0">
-            <div className="max-w-7xl mx-auto px-6 py-8">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center text-primary-foreground font-bold text-[10px]">
-                    TM
+            <div className="max-w-7xl mx-auto px-6 py-10">
+              
+              {/* Top Row */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                {/* Brand */}
+                <div className="md:col-span-1 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
+                      TM
+                    </div>
+                    <span className="font-bold text-lg">TalentMind AI</span>
                   </div>
-                  <span className="font-semibold">TalentMind AI</span>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Your AI-powered career acceleration platform. Built to help you land your dream job faster.
+                  </p>
                 </div>
-                
-                <div className="flex items-center gap-4">
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                  <a href="mailto:contact@talentmind.ai" className="text-muted-foreground hover:text-foreground transition-colors">
-                    <Mail className="w-4 h-4" />
-                  </a>
+
+                {/* Platform Links */}
+                <div>
+                  <h4 className="font-semibold text-sm mb-3">Platform</h4>
+                  <ul className="space-y-2">
+                    <li><Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Dashboard</Link></li>
+                    <li><Link to="/job/analyze" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Job Match</Link></li>
+                    <li><Link to="/interview/setup" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mock Interview</Link></li>
+                    <li><Link to="/chat" className="text-sm text-muted-foreground hover:text-foreground transition-colors">AI Mentor</Link></li>
+                  </ul>
                 </div>
-                
-                <p className="text-xs text-muted-foreground text-center md:text-right">
-                  © {new Date().getFullYear()} TalentMind AI.<br/>Built by Aditya Raj
+
+                {/* Account Links */}
+                <div>
+                  <h4 className="font-semibold text-sm mb-3">Account</h4>
+                  <ul className="space-y-2">
+                    <li><Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Profile</Link></li>
+                    <li><Link to="/settings" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Settings</Link></li>
+                  </ul>
+                </div>
+
+                {/* Tech & Contact */}
+                <div>
+                  <h4 className="font-semibold text-sm mb-3">Built With</h4>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">React</span>
+                    <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">Node.js</span>
+                    <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">MongoDB</span>
+                    <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">Gemini AI</span>
+                    <span className="text-xs px-2 py-1 rounded-md bg-muted text-muted-foreground">Tailwind CSS</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" title="GitHub">
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                    <a href="mailto:adityaraj21103@gmail.com" className="text-muted-foreground hover:text-foreground transition-colors" title="Email">
+                      <Mail className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Bottom Bar */}
+              <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+                <p className="text-xs text-muted-foreground">
+                  © {new Date().getFullYear()} TalentMind AI. All rights reserved.
+                </p>
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  Made with <Heart className="w-3 h-3 text-rose-500 fill-rose-500" /> by Aditya Raj
                 </p>
               </div>
+
             </div>
           </footer>
         </main>

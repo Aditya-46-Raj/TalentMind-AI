@@ -351,6 +351,46 @@ function DashboardPage() {
           </div>
         </div>
 
+        {/* Platform Features */}
+        <div>
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold tracking-tight">Everything You Need For Your Career</h2>
+            <p className="text-muted-foreground mt-2">TalentMind AI is your all-in-one career acceleration platform</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <FileText className="w-6 h-6 text-blue-500 mb-3" />
+              <h3 className="font-semibold mb-1">Smart Resume Parsing</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Upload your resume and our AI extracts skills, experience, and generates an ATS compatibility score instantly.</p>
+            </div>
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <Briefcase className="w-6 h-6 text-indigo-500 mb-3" />
+              <h3 className="font-semibold mb-1">JD Match Engine</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Paste any job description and get a detailed match analysis — matched skills, missing skills, and a personalized roadmap.</p>
+            </div>
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <Mic className="w-6 h-6 text-purple-500 mb-3" />
+              <h3 className="font-semibold mb-1">AI Mock Interviews</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Practice with AI-generated interview questions tailored to your target role, then receive a detailed score breakdown.</p>
+            </div>
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <MessageSquare className="w-6 h-6 text-emerald-500 mb-3" />
+              <h3 className="font-semibold mb-1">Career Mentor Chat</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Chat with an AI mentor that has full context on your resume and job matches for highly personalized career advice.</p>
+            </div>
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <BookOpen className="w-6 h-6 text-amber-500 mb-3" />
+              <h3 className="font-semibold mb-1">30-Day Learning Plans</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">After every mock interview, receive a curated improvement plan with topics, projects, and resources to study.</p>
+            </div>
+            <div className="p-5 border rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow">
+              <Sparkles className="w-6 h-6 text-rose-500 mb-3" />
+              <h3 className="font-semibold mb-1">Personalized Roadmaps</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Get AI-generated career roadmaps based on your current skills and target role to bridge the gap effectively.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
