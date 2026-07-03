@@ -26,6 +26,7 @@ function RegisterPage() {
         try {
             const res = await registerUser(formData);
             if (res.success) {
+                import("sonner").then(({ toast }) => toast.success("Account created successfully! Please log in."));
                 navigate("/login");
             }
         } catch (err) {

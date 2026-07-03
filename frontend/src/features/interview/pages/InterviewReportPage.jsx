@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getInterviewById } from "../services/interviewService";
-import { Loader2, ArrowLeft, CheckCircle2, XCircle, Lightbulb, Trophy } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, Lightbulb, Trophy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function InterviewReportPage() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ function InterviewReportPage() {
 
     useEffect(() => {
         const fetchSession = async () => {
+            setLoading(true);
             try {
                 const res = await getInterviewById(id);
                 if (res.success) {
@@ -28,23 +30,22 @@ function InterviewReportPage() {
         fetchSession();
     }, [id]);
 
-    if (loading) {
+    if (error) {
         return (
-            <div className="flex h-[60vh] items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="max-w-2xl mx-auto p-8 text-center space-y-4">
+                <div className="p-4 text-sm font-medium text-destructive bg-destructive/10 rounded-md">
+                    {error}
+                </div>
+                <Link to="/dashboard">
+                    <Button variant="outline" className="gap-2">
+                        <ArrowLeft className="w-4 h-4" /> Go Back
+                    </Button>
+                </Link>
             </div>
         );
     }
 
-    if (error || !session) {
-        return (
-            <div className="max-w-2xl mx-auto p-8 text-center text-destructive">
-                {error || "Report not found"}
-            </div>
-        );
-    }
-
-    const { score, feedback, improvementPlan } = session;
+    const { score = {}, feedback = {}, improvementPlan = {}, role = "", company = "" } = session || {};
 
     return (
         <div className="max-w-5xl mx-auto p-4 md:p-8 space-y-8 animate-in fade-in duration-500 pb-20">
@@ -55,65 +56,99 @@ function InterviewReportPage() {
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Interview Report</h1>
-                    <p className="text-muted-foreground mt-1">{session.role} at {session.company}</p>
+                    {loading ? (
+                        <>
+                            <Skeleton className="h-8 w-64 mb-2" />
+                            <Skeleton className="h-4 w-40" />
+                        </>
+                    ) : (
+                        <>
+                            <h1 className="text-3xl font-bold tracking-tight">Interview Report</h1>
+                            <p className="text-muted-foreground mt-1">{role} at {company}</p>
+                        </>
+                    )}
                 </div>
             </div>
 
             {/* Score Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 border rounded-2xl bg-card p-6 shadow-sm flex flex-col items-center justify-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                        <Trophy className="w-12 h-12 text-primary" />
-                    </div>
-                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-1">Overall Score</p>
-                    <h2 className="text-5xl font-bold text-primary">{score?.total || 0}</h2>
-                    <p className="text-sm text-muted-foreground mt-2">out of 100</p>
+                    {loading ? (
+                        <>
+                            <Skeleton className="w-24 h-24 rounded-full mb-4" />
+                            <Skeleton className="h-4 w-24 mb-2" />
+                            <Skeleton className="h-12 w-20 mb-2" />
+                            <Skeleton className="h-4 w-16" />
+                        </>
+                    ) : (
+                        <>
+                            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                                <Trophy className="w-12 h-12 text-primary" />
+                            </div>
+                            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-1">Overall Score</p>
+                            <h2 className="text-5xl font-bold text-primary">{score?.total || 0}</h2>
+                            <p className="text-sm text-muted-foreground mt-2">out of 100</p>
+                        </>
+                    )}
                 </div>
 
                 <div className="md:col-span-2 border rounded-2xl bg-card p-6 shadow-sm space-y-4">
                     <h3 className="font-semibold text-lg border-b pb-2">Score Breakdown</h3>
 
                     <div className="space-y-4 pt-2">
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span>Technical Accuracy</span>
-                                <span className="font-medium">{score?.technicalAccuracy || 0}/40</span>
-                            </div>
-                            <div className="w-full bg-secondary rounded-full h-2">
-                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${((score?.technicalAccuracy || 0) / 40) * 100}%` }}></div>
-                            </div>
-                        </div>
+                        {loading ? (
+                            Array.from({ length: 4 }).map((_, i) => (
+                                <div key={i}>
+                                    <div className="flex justify-between mb-2">
+                                        <Skeleton className="h-4 w-32" />
+                                        <Skeleton className="h-4 w-12" />
+                                    </div>
+                                    <Skeleton className="h-2 w-full rounded-full" />
+                                </div>
+                            ))
+                        ) : (
+                            <>
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span>Technical Accuracy</span>
+                                        <span className="font-medium">{score?.technicalAccuracy || 0}/40</span>
+                                    </div>
+                                    <div className="w-full bg-secondary rounded-full h-2">
+                                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${((score?.technicalAccuracy || 0) / 40) * 100}%` }}></div>
+                                    </div>
+                                </div>
 
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span>Communication</span>
-                                <span className="font-medium">{score?.communication || 0}/20</span>
-                            </div>
-                            <div className="w-full bg-secondary rounded-full h-2">
-                                <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${((score?.communication || 0) / 20) * 100}%` }}></div>
-                            </div>
-                        </div>
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span>Communication</span>
+                                        <span className="font-medium">{score?.communication || 0}/20</span>
+                                    </div>
+                                    <div className="w-full bg-secondary rounded-full h-2">
+                                        <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${((score?.communication || 0) / 20) * 100}%` }}></div>
+                                    </div>
+                                </div>
 
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span>Problem Solving</span>
-                                <span className="font-medium">{score?.problemSolving || 0}/20</span>
-                            </div>
-                            <div className="w-full bg-secondary rounded-full h-2">
-                                <div className="bg-amber-500 h-2 rounded-full" style={{ width: `${((score?.problemSolving || 0) / 20) * 100}%` }}></div>
-                            </div>
-                        </div>
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span>Problem Solving</span>
+                                        <span className="font-medium">{score?.problemSolving || 0}/20</span>
+                                    </div>
+                                    <div className="w-full bg-secondary rounded-full h-2">
+                                        <div className="bg-amber-500 h-2 rounded-full" style={{ width: `${((score?.problemSolving || 0) / 20) * 100}%` }}></div>
+                                    </div>
+                                </div>
 
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span>Project Knowledge</span>
-                                <span className="font-medium">{score?.projectKnowledge || 0}/20</span>
-                            </div>
-                            <div className="w-full bg-secondary rounded-full h-2">
-                                <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${((score?.projectKnowledge || 0) / 20) * 100}%` }}></div>
-                            </div>
-                        </div>
+                                <div>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span>Project Knowledge</span>
+                                        <span className="font-medium">{score?.projectKnowledge || 0}/20</span>
+                                    </div>
+                                    <div className="w-full bg-secondary rounded-full h-2">
+                                        <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${((score?.projectKnowledge || 0) / 20) * 100}%` }}></div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -125,8 +160,12 @@ function InterviewReportPage() {
                         <CheckCircle2 className="w-5 h-5" />
                         <h3 className="font-semibold">Strengths</h3>
                     </div>
-                    <ul className="space-y-2">
-                        {feedback?.strengths?.map((item, idx) => (
+                    <ul className="space-y-3">
+                        {loading ? (
+                            Array.from({ length: 3 }).map((_, i) => (
+                                <Skeleton key={i} className="h-4 w-full" />
+                            ))
+                        ) : feedback?.strengths?.map((item, idx) => (
                             <li key={idx} className="text-sm flex items-start gap-2">
                                 <span className="text-emerald-500 mt-0.5">•</span>
                                 <span>{item}</span>
@@ -140,8 +179,12 @@ function InterviewReportPage() {
                         <XCircle className="w-5 h-5" />
                         <h3 className="font-semibold">Weaknesses</h3>
                     </div>
-                    <ul className="space-y-2">
-                        {feedback?.weaknesses?.map((item, idx) => (
+                    <ul className="space-y-3">
+                        {loading ? (
+                            Array.from({ length: 3 }).map((_, i) => (
+                                <Skeleton key={i} className="h-4 w-full" />
+                            ))
+                        ) : feedback?.weaknesses?.map((item, idx) => (
                             <li key={idx} className="text-sm flex items-start gap-2">
                                 <span className="text-destructive mt-0.5">•</span>
                                 <span>{item}</span>
@@ -155,8 +198,12 @@ function InterviewReportPage() {
                         <Lightbulb className="w-5 h-5" />
                         <h3 className="font-semibold">Suggestions</h3>
                     </div>
-                    <ul className="space-y-2">
-                        {feedback?.suggestions?.map((item, idx) => (
+                    <ul className="space-y-3">
+                        {loading ? (
+                            Array.from({ length: 3 }).map((_, i) => (
+                                <Skeleton key={i} className="h-4 w-full" />
+                            ))
+                        ) : feedback?.suggestions?.map((item, idx) => (
                             <li key={idx} className="text-sm flex items-start gap-2">
                                 <span className="text-amber-500 mt-0.5">•</span>
                                 <span>{item}</span>
@@ -174,7 +221,11 @@ function InterviewReportPage() {
                     <div>
                         <h4 className="font-semibold mb-3">Topics to Study</h4>
                         <ul className="space-y-2">
-                            {improvementPlan?.topicsToStudy?.map((item, idx) => (
+                            {loading ? (
+                                Array.from({ length: 4 }).map((_, i) => (
+                                    <Skeleton key={i} className="h-8 w-full rounded-md" />
+                                ))
+                            ) : improvementPlan?.topicsToStudy?.map((item, idx) => (
                                 <li key={idx} className="text-sm bg-secondary px-3 py-2 rounded-md">{item}</li>
                             ))}
                         </ul>
@@ -182,7 +233,11 @@ function InterviewReportPage() {
                     <div>
                         <h4 className="font-semibold mb-3">Projects to Build</h4>
                         <ul className="space-y-2">
-                            {improvementPlan?.projectsToBuild?.map((item, idx) => (
+                            {loading ? (
+                                Array.from({ length: 3 }).map((_, i) => (
+                                    <Skeleton key={i} className="h-8 w-full rounded-md" />
+                                ))
+                            ) : improvementPlan?.projectsToBuild?.map((item, idx) => (
                                 <li key={idx} className="text-sm bg-secondary px-3 py-2 rounded-md">{item}</li>
                             ))}
                         </ul>
@@ -190,9 +245,19 @@ function InterviewReportPage() {
                 </div>
 
                 <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
-                    <ReactMarkdown>
-                        {improvementPlan?.thirtyDayPlan || ""}
-                    </ReactMarkdown>
+                    {loading ? (
+                        <div className="space-y-2">
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-3/4" />
+                            <Skeleton className="h-4 w-full mt-4" />
+                            <Skeleton className="h-4 w-5/6" />
+                        </div>
+                    ) : (
+                        <ReactMarkdown>
+                            {improvementPlan?.thirtyDayPlan || ""}
+                        </ReactMarkdown>
+                    )}
                 </div>
             </div>
 

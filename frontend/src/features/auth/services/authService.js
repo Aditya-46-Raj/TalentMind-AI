@@ -29,3 +29,8 @@ export const getCurrentUser =
 
     return res.data;
   };
+
+export const uploadAvatar = async (avatarBase64) => {
+    const res = await api.put("/auth/avatar", { avatar: avatarBase64 });
+    return res.data;
+};

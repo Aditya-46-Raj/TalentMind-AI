@@ -8,6 +8,7 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
+import SettingsPage from "../features/settings/pages/SettingsPage";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -19,6 +20,7 @@ import InterviewSessionPage from "../features/interview/pages/InterviewSessionPa
 import InterviewReportPage from "../features/interview/pages/InterviewReportPage";
 import MainLayout from "../components/layout/MainLayout";
 import AuthLayout from "../components/layout/AuthLayout";
+import ErrorBoundary from "../components/ui/error-boundary";
 
 function AppRoutes() {
   return (
@@ -33,9 +35,11 @@ function AppRoutes() {
         path="/login"
         element={
           <PublicRoute>
-            <AuthLayout>
-              <LoginPage />
-            </AuthLayout>
+            <ErrorBoundary>
+              <AuthLayout>
+                <LoginPage />
+              </AuthLayout>
+            </ErrorBoundary>
           </PublicRoute>
         }
       />
@@ -44,9 +48,11 @@ function AppRoutes() {
         path="/register"
         element={
           <PublicRoute>
-            <AuthLayout>
-              <RegisterPage />
-            </AuthLayout>
+            <ErrorBoundary>
+              <AuthLayout>
+                <RegisterPage />
+              </AuthLayout>
+            </ErrorBoundary>
           </PublicRoute>
         }
       />
@@ -56,9 +62,11 @@ function AppRoutes() {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <DashboardPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <DashboardPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -67,9 +75,11 @@ function AppRoutes() {
         path="/profile"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <ProfilePage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <ProfilePage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -78,9 +88,11 @@ function AppRoutes() {
         path="/job/analyze"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <JDInputPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <JDInputPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -89,9 +101,11 @@ function AppRoutes() {
         path="/job/results/:id"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <AnalysisResultPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <AnalysisResultPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -111,9 +125,11 @@ function AppRoutes() {
         path="/chat/:id"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <ChatPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <ChatPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -122,9 +138,11 @@ function AppRoutes() {
         path="/interview/setup"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <InterviewSetupPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <InterviewSetupPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -133,9 +151,11 @@ function AppRoutes() {
         path="/interview/session/:id"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <InterviewSessionPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <InterviewSessionPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -144,9 +164,24 @@ function AppRoutes() {
         path="/interview/report/:id"
         element={
           <ProtectedRoute>
-            <MainLayout>
-              <InterviewReportPage />
-            </MainLayout>
+            <ErrorBoundary>
+              <MainLayout>
+                <InterviewReportPage />
+              </MainLayout>
+            </ErrorBoundary>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <ErrorBoundary>
+              <MainLayout>
+                <SettingsPage />
+              </MainLayout>
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />

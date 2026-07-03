@@ -9,6 +9,9 @@ const useAuthStore = create((set, get) => ({
   setUser: (user) =>
     set({ user }),
 
+  updateAvatar: (avatar) =>
+    set((state) => ({ user: state.user ? { ...state.user, avatar } : null })),
+
   setToken: (token) => {
     localStorage.setItem("token", token);
     set({ token });

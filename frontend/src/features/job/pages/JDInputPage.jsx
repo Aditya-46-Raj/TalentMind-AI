@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Upload, FileText, Briefcase } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 function JDInputPage() {
     const [resume, setResume] = useState(null);
@@ -16,7 +18,6 @@ function JDInputPage() {
     const [jobTitle, setJobTitle] = useState("");
     const [company, setCompany] = useState("");
     const [jobDescription, setJobDescription] = useState("");
-    const [error, setError] = useState(null);
 
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
@@ -50,16 +51,16 @@ function JDInputPage() {
         if (!file) return;
 
         setIsUploading(true);
-        setError(null);
         try {
             const formData = new FormData();
             formData.append("resume", file);
             const data = await uploadResume(formData);
             if (data.success) {
                 setResume(data.resume);
+                toast.success("Resume uploaded successfully!");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to upload resume");
+            toast.error(err.response?.data?.message || "Failed to upload resume");
         } finally {
             setIsUploading(false);
             if (fileInputRef.current) {
@@ -72,17 +73,16 @@ function JDInputPage() {
         e.preventDefault();
         
         if (!resume) {
-            setError("Please upload a resume first.");
+            toast.error("Please upload a resume first.");
             return;
         }
 
         if (!jobTitle || !company || !jobDescription) {
-            setError("Please fill in all job details.");
+            toast.error("Please fill in all job details.");
             return;
         }
 
         setIsAnalyzing(true);
-        setError(null);
 
         try {
             const data = await analyzeJob({
@@ -92,16 +92,17 @@ function JDInputPage() {
             });
 
             if (data.success) {
+                toast.success("Job analysis completed!");
                 navigate(`/job/results/${data.jobAnalysis._id}`);
             }
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to analyze job");
+            toast.error(err.response?.data?.message || "Failed to analyze job");
             setIsAnalyzing(false);
         }
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-8 animate-in fade-in duration-500">
+        <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-8 animate-in fade-in duration-500 pb-12">
             <div className="flex flex-col items-center text-center space-y-4 mb-4">
                 <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center">
                     <Briefcase className="w-8 h-8" />
@@ -113,12 +114,6 @@ function JDInputPage() {
                     </p>
                 </div>
             </div>
-            
-            {error && (
-                <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 rounded-md">
-                    {error}
-                </div>
-            )}
 
             {/* Resume Section */}
             <div className="p-6 bg-muted/30 border rounded-2xl shadow-sm space-y-4">
@@ -128,9 +123,12 @@ function JDInputPage() {
                 </h2>
                 
                 {isLoading ? (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Loading resume...
+                    <div className="flex items-center justify-between bg-card p-4 rounded-xl border">
+                        <div className="flex flex-col space-y-2">
+                            <Skeleton className="h-5 w-40" />
+                            <Skeleton className="h-4 w-32" />
+                        </div>
+                        <Skeleton className="h-10 w-28 rounded-md" />
                     </div>
                 ) : resume ? (
                     <div className="flex items-center justify-between bg-card p-4 rounded-xl border">
@@ -151,13 +149,16 @@ function JDInputPage() {
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex flex-col items-center justify-center space-y-4 py-8 border-2 border-dashed rounded-xl bg-card/50">
+                    <div className="flex flex-col items-center justify-center space-y-4 py-8 border-2 border-dashed border-primary/30 rounded-xl bg-card/50 hover:bg-card transition-colors">
                         <Upload className="w-8 h-8 text-muted-foreground" />
-                        <p className="text-muted-foreground text-sm">No resume found. Upload one to start.</p>
+                        <div className="text-center">
+                            <h3 className="font-semibold">No resume found</h3>
+                            <p className="text-muted-foreground text-sm mt-1">Upload one to start analyzing job matches.</p>
+                        </div>
                         <Button 
                             onClick={handleReplaceClick}
                             disabled={isUploading || isAnalyzing}
-                            className="gap-2"
+                            className="gap-2 mt-2"
                         >
                             {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                             {isUploading ? "Uploading..." : "Upload Resume"}

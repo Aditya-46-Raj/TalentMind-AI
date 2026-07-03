@@ -59,6 +59,7 @@ function InterviewSessionPage() {
             try {
                 const res = await submitInterview({ sessionId: id, answers: newAnswers });
                 if (res.success) {
+                    import("sonner").then(({ toast }) => toast.success("Interview completed! Generating report..."));
                     navigate(`/interview/report/${id}`);
                 }
             } catch (err) {

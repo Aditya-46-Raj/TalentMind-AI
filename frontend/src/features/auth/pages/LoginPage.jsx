@@ -30,6 +30,7 @@ function LoginPage() {
             if (res.success) {
                 setToken(res.token);
                 await checkAuth();
+                import("sonner").then(({ toast }) => toast.success("Welcome back!"));
                 navigate("/dashboard");
             }
         } catch (err) {
