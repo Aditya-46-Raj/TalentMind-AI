@@ -44,19 +44,29 @@ Upload your PDF resume. Paste a job description. Watch the AI parse your skills,
 
 ## ✨ Core Features
 
+### 🖥️ Premium Dashboard & UI
+A modern, responsive interface built with **Tailwind CSS v4**, **Shadcn UI**, and **Lucide React** icons. Features include:
+- 🌓 **Dark/Light Mode** toggle (synced to `localStorage`)
+- 📊 **Analytics cards** showing profile completion, resumes uploaded, interviews completed
+- ⏳ **Skeleton loaders** on all major pages for a premium loading feel
+- 🧭 **Collapsible sidebar** with quick navigation
+- 🔔 **Global error handling** with toast notifications for network errors, 401s, 403s, and 500s
+
+![Home Dashboard](./docs/screenshots/Home_dashboard.png)
+
+![User Profile Page](./docs/screenshots/Profile_page.png)
+
+---
+
 ### 📄 Smart Resume Analysis
 Upload your PDF resume. The backend uses `pdf-parse` to extract raw text, runs it through a custom ATS scoring engine (checking for contact info, education, experience, projects, and skill density), and then sends it to **Gemini AI** for deep analysis — returning strengths, weaknesses, and actionable suggestions.
-
-<!-- 📸 SCREENSHOT: Resume Analysis page showing the uploaded resume with ATS score, extracted skills, and AI suggestions -->
-> **Screenshot needed →** *Resume Analysis page showing the ATS score circle, extracted skills list, and AI-generated suggestions panel*
 
 ---
 
 ### 🎯 Job Description Matcher
 Paste any job description. The system extracts the required skills from the JD, compares them against your resume skills, and computes a **Match Score**. Gemini AI then explains why you're a good (or bad) fit, and generates a learning roadmap to close the gaps.
 
-<!-- 📸 SCREENSHOT: JD Analysis results page showing match score, matched/missing skills, and AI roadmap -->
-> **Screenshot needed →** *JD Analysis results page showing the match percentage, matched vs. missing skills breakdown, and AI-generated roadmap*
+![Job Description Matching](./docs/screenshots/Job_Match.png)
 
 ---
 
@@ -72,38 +82,14 @@ Configure your interview by selecting a **target role**, **company name**, and *
 
 The final report includes a detailed **30-Day Improvement Plan** with topics to study, projects to build, and curated learning resources.
 
-<!-- 📸 SCREENSHOT: Interview Setup page showing role, company, and difficulty inputs -->
-> **Screenshot needed →** *Interview Setup page with the Role, Company, and Difficulty selector*
-
-<!-- 📸 SCREENSHOT: Interview Session page showing a question and the answer input -->
-> **Screenshot needed →** *Mid-session view showing the current question, progress indicator, and answer text area*
-
-<!-- 📸 SCREENSHOT: Interview Report page showing score breakdown with progress bars and the improvement plan -->
-> **Screenshot needed →** *Interview Report showing score progress bars, strengths/weaknesses, and the 30-day plan*
+![AI Mock Interview Simulator](./docs/screenshots/AI_mock_Interview.png)
 
 ---
 
 ### 💬 Context-Aware Career Chatbot
 Not just a generic AI chat. The chatbot receives your **full profile**, **latest resume analysis**, and **latest JD analysis** as context with every message. Ask it for cover letter drafts, salary negotiation advice, or project ideas — and it responds with answers tailored specifically to *your* career situation.
 
-<!-- 📸 SCREENSHOT: Chat page showing a conversation with the AI mentor -->
-> **Screenshot needed →** *Chat interface showing a multi-turn conversation with context-aware AI responses*
-
----
-
-### 🖥️ Premium Dashboard & UI
-A modern, responsive interface built with **Tailwind CSS v4**, **Shadcn UI**, and **Lucide React** icons. Features include:
-- 🌓 **Dark/Light Mode** toggle (synced to `localStorage`)
-- 📊 **Analytics cards** showing profile completion, resumes uploaded, interviews completed
-- ⏳ **Skeleton loaders** on all major pages for a premium loading feel
-- 🧭 **Collapsible sidebar** with quick navigation
-- 🔔 **Global error handling** with toast notifications for network errors, 401s, 403s, and 500s
-
-<!-- 📸 SCREENSHOT: Dashboard page (Light mode) showing analytics cards and feature descriptions -->
-> **Screenshot needed →** *Dashboard in Light mode showing the stats cards, quick actions, and platform features section*
-
-<!-- 📸 SCREENSHOT: Dashboard page (Dark mode) showing the same view -->
-> **Screenshot needed →** *Dashboard in Dark mode for contrast*
+![AI Career Mentor Chat](./docs/screenshots/AI_mentor.png)
 
 ---
 
