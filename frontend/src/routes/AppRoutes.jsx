@@ -1,26 +1,41 @@
+import { lazy, Suspense } from "react";
 import {
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import useAuthStore from "../features/auth/store/authStore";
-import LoginPage from "../features/auth/pages/LoginPage";
-import RegisterPage from "../features/auth/pages/RegisterPage";
-import DashboardPage from "../features/dashboard/pages/DashboardPage";
-import ProfilePage from "../features/profile/pages/ProfilePage";
-import SettingsPage from "../features/settings/pages/SettingsPage";
+import { Loader2 } from "lucide-react";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
-import JDInputPage from "../features/job/pages/JDInputPage";
-import AnalysisResultPage from "../features/job/pages/AnalysisResultPage";
-import ChatPage from "../features/chat/pages/ChatPage";
-import InterviewSetupPage from "../features/interview/pages/InterviewSetupPage";
-import InterviewSessionPage from "../features/interview/pages/InterviewSessionPage";
-import InterviewReportPage from "../features/interview/pages/InterviewReportPage";
 import MainLayout from "../components/layout/MainLayout";
 import AuthLayout from "../components/layout/AuthLayout";
 import ErrorBoundary from "../components/ui/error-boundary";
+
+// Lazy Loaded Pages
+const LoginPage = lazy(() => import("../features/auth/pages/LoginPage"));
+const RegisterPage = lazy(() => import("../features/auth/pages/RegisterPage"));
+const DashboardPage = lazy(() => import("../features/dashboard/pages/DashboardPage"));
+const ProfilePage = lazy(() => import("../features/profile/pages/ProfilePage"));
+const SettingsPage = lazy(() => import("../features/settings/pages/SettingsPage"));
+const JDInputPage = lazy(() => import("../features/job/pages/JDInputPage"));
+const AnalysisResultPage = lazy(() => import("../features/job/pages/AnalysisResultPage"));
+const ChatPage = lazy(() => import("../features/chat/pages/ChatPage"));
+const InterviewSetupPage = lazy(() => import("../features/interview/pages/InterviewSetupPage"));
+const InterviewSessionPage = lazy(() => import("../features/interview/pages/InterviewSessionPage"));
+const InterviewReportPage = lazy(() => import("../features/interview/pages/InterviewReportPage"));
+
+const FallbackLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <Loader2 className="w-10 h-10 animate-spin text-primary" />
+  </div>
+);
+
+const PageWrapper = ({ children }) => (
+  <Suspense fallback={<FallbackLoader />}>
+    {children}
+  </Suspense>
+);
 
 function AppRoutes() {
   return (
@@ -37,7 +52,7 @@ function AppRoutes() {
           <PublicRoute>
             <ErrorBoundary>
               <AuthLayout>
-                <LoginPage />
+                <PageWrapper><LoginPage /></PageWrapper>
               </AuthLayout>
             </ErrorBoundary>
           </PublicRoute>
@@ -50,7 +65,7 @@ function AppRoutes() {
           <PublicRoute>
             <ErrorBoundary>
               <AuthLayout>
-                <RegisterPage />
+                <PageWrapper><RegisterPage /></PageWrapper>
               </AuthLayout>
             </ErrorBoundary>
           </PublicRoute>
@@ -64,7 +79,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <DashboardPage />
+                <PageWrapper><DashboardPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -77,7 +92,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <ProfilePage />
+                <PageWrapper><ProfilePage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -90,7 +105,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <JDInputPage />
+                <PageWrapper><JDInputPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -103,7 +118,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <AnalysisResultPage />
+                <PageWrapper><AnalysisResultPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -115,7 +130,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <ChatPage />
+              <PageWrapper><ChatPage /></PageWrapper>
             </MainLayout>
           </ProtectedRoute>
         }
@@ -127,7 +142,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <ChatPage />
+                <PageWrapper><ChatPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -140,7 +155,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <InterviewSetupPage />
+                <PageWrapper><InterviewSetupPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -153,7 +168,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <InterviewSessionPage />
+                <PageWrapper><InterviewSessionPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -166,7 +181,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <InterviewReportPage />
+                <PageWrapper><InterviewReportPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>
@@ -179,7 +194,7 @@ function AppRoutes() {
           <ProtectedRoute>
             <ErrorBoundary>
               <MainLayout>
-                <SettingsPage />
+                <PageWrapper><SettingsPage /></PageWrapper>
               </MainLayout>
             </ErrorBoundary>
           </ProtectedRoute>

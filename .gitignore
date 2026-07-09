@@ -41,3 +41,4 @@ Thumbs.db
 
 # AI-related (can be included if you want to track prompts/samples)
 ai_samples/
+TalentMind-docs/*
