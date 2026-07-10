@@ -19,12 +19,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
 
       # 3. Install dependencies
       - name: Install dependencies
         working-directory: ./backend
-        run: npm install --production
+        run: npm ci
 
       # 4. Create deployment package
       - name: Build artifact
