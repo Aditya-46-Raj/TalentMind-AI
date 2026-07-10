@@ -19,7 +19,9 @@
 
 <br>
 
-[Live Demo](#) · [Phase-wise Documentation](./TalentMind-docs/) · [Report a Bug](https://github.com/Aditya-46-Raj/TalentMind-AI/issues)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-28a745?style=for-the-badge)](https://talentmind-ai-adi.vercel.app)&nbsp;&nbsp;
+[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Azure-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)](https://talentmind-ai.azurewebsites.net/)&nbsp;&nbsp;
+[![Report Bug](https://img.shields.io/badge/🐛_Report_Bug-GitHub-red?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Aditya-46-Raj/TalentMind-AI/issues)
 
 </div>
 
